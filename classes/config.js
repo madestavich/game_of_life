@@ -25,24 +25,27 @@ export class Configuration {
             this.dish.countOfCells = inputs[i].value;
             break;
           case 1:
-            this.energyRules.startEnergyModificator = inputs[i].value;
+            this.dish.maxPopulation = inputs[i].value;
             break;
           case 2:
-            this.energyRules.spawn = inputs[i].value;
+            this.energyRules.startEnergyModificator = inputs[i].value;
             break;
           case 3:
-            this.energyRules.spawnRest = inputs[i].value;
+            this.energyRules.spawn = inputs[i].value;
             break;
           case 4:
-            this.energyRules.startMove = inputs[i].value;
+            this.energyRules.spawnRest = inputs[i].value;
             break;
           case 5:
-            this.energyRules.startMoveModificator = inputs[i].value;
+            this.energyRules.startMove = inputs[i].value;
             break;
           case 6:
-            this.energyRules.stopMove = inputs[i].value;
+            this.energyRules.startMoveModificator = inputs[i].value;
             break;
           case 7:
+            this.energyRules.stopMove = inputs[i].value;
+            break;
+          case 8:
             this.energyRules.energyPerMove = inputs[i].value;
             break;
           case 8:

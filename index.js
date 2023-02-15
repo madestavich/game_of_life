@@ -9,6 +9,7 @@ const startButton = document.getElementById("start");
 let defaultConfiguration = {
   dish: {
     countOfCells: 1,
+    maxPopulation: 1000,
   },
   energyRules: {
     startEnergyModificator: 10,
@@ -16,7 +17,7 @@ let defaultConfiguration = {
     spawnRest: 1,
     startMove: 6,
     startMoveModificator: 10,
-    stopMove: 6,
+    stopMove: 0,
     energyPerMove: 2,
     eatAdvantage: 6,
   },
@@ -39,8 +40,10 @@ startButton.addEventListener("click", (e) => {
   console.log(configuration);
   let petri = new petriDish(ctx, configuration);
   petri.seed();
+  petri.state = "running";
   petri.animate();
   e.target.disabled = true;
+  e.target.innerText = "Stop";
 });
 
 canvas.width = window.innerWidth - 50;
@@ -53,6 +56,7 @@ class petriDish {
     this.cells = [];
     this.nextCells = this.cells;
     this.configuration = configuration;
+    this.state = "paused";
   }
 
   seed() {
@@ -194,20 +198,22 @@ class petriDish {
     }
   }
 
-  animate() {
-    this.ctx.clearRect(0, 0, canvas.width, canvas.height);
-    this.energyCheck();
-    if (this.cells.length < 2000) {
-      this.spawnCheck();
+  animate(state) {
+    if (state === "running") {
+      this.ctx.clearRect(0, 0, canvas.width, canvas.height);
+      this.energyCheck();
+      if (this.cells.length < this.configuration.dish.maxPopulation) {
+        this.spawnCheck();
+      }
+      this.update();
+      this.checkCollisionsWithBorders();
+      this.checkCollisions();
+      this.killCells();
+      this.draw();
+
+      population.innerText = this.cells.length;
+
+      requestAnimationFrame(this.animate.bind(this));
     }
-    this.update();
-    this.checkCollisionsWithBorders();
-    this.checkCollisions();
-    this.killCells();
-    this.draw();
-
-    population.innerText = this.cells.length;
-
-    requestAnimationFrame(this.animate.bind(this));
   }
 }
