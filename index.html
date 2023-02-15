@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+        font-size: 11px;
+        text-align: center;
+        background-color: rgb(77, 77, 77);
+        font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+          "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+      }
+      input {
+        margin: 1%;
+        padding: 1%;
+        width: 70%;
+        font-size: 9px;
+        text-align: center;
+      }
+      .energy_rules p {
+        margin: 0;
+        width: 25%;
+      }
+      .canvas {
+        border: 5px solid rgb(77, 77, 77);
+        background-color: #e6ebbb;
+      }
+      .settings {
+        display: flex;
+        justify-content: space-between;
+        background-color: rgb(17, 24, 24);
+        padding: 4px;
+      }
+      .population {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        color: rgb(255, 255, 255);
+        padding: 0 2px;
+        width: 20%;
+      }
+      .settings_wrapper {
+        display: flex;
+        width: 80%;
+      }
+      .dish_settings {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: rgb(155, 118, 64);
+      }
+      .energy_rules {
+        display: flex;
+        flex-direction: column;
+        background-color: rgb(184, 212, 106);
+        width: 70%;
+      }
+      .wrapper {
+        display: flex;
+        flex-direction: row;
+      }
+      .start {
+        background-color: rgb(27, 177, 39);
+        border: none;
+        cursor: pointer;
+        width: 30%;
+        color: rgb(36, 78, 66);
+        transition: 0.5s ease;
+        margin: 2px;
+      }
+      .start:hover {
+        background-color: rgb(15, 109, 38);
+        color: rgb(78, 206, 170);
+        transition: 0.5s ease;
+      }
+      .start:disabled {
+        background-color: rgb(124, 124, 124);
+        color: rgb(0, 0, 0);
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas" class="canvas"></canvas>
+    <section class="settings">
+      <div class="population">
+        <p>Total population:</p>
+        <b id="population"></b>
+      </div>
+      <div class="settings_wrapper">
+        <div class="dish_settings">
+          <p
+            >Count of cells<input
+              type="text"
+              placeholder="better not more than 3000"
+          /></p>
+          <button id="start" class="start">Start</button>
+        </div>
+        <div class="energy_rules">
+          <div class="wrapper">
+            <p
+              >Cell energy<input
+                id="cell_energy"
+                type="text"
+                placeholder="try from 2"
+            /></p>
+            <p
+              >Cell reproduce<input
+                id="cell_reproduce"
+                type="text"
+                placeholder="on this count of energy"
+            /></p>
+            <p
+              >Energy rest<input
+                id="reproduce_rest"
+                type="text"
+                placeholder="after reproduce"
+            /></p>
+            <p
+              >Start move<input
+                id="start_move"
+                type="text"
+                placeholder="on this energy or higher"
+            /></p>
+          </div>
+          <div class="wrapper">
+            <p
+              >Start move<input
+                id="move_modificator"
+                type="text"
+                placeholder="randomize modificator"
+            /></p>
+            <p
+              >Stop move<input
+                id="stop_move"
+                type="text"
+                placeholder="on this energy"
+            /></p>
+            <p
+              >Energy per move<input
+                id="energy_per_move"
+                type="text"
+                placeholder="spent"
+            /></p>
+            <p
+              >Eat advantage<input
+                id="eat_advantage"
+                type="text"
+                placeholder="adventage to eat cell"
+            /></p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <script src="index.js" type="module"></script>
+  </body>
+</html>
