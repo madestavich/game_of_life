@@ -22,10 +22,10 @@ export class Configuration {
       if (inputs[i].value != "") {
         switch (i) {
           case 0:
-            this.dish.countOfCells = inputs[i].value;
+            this.dish.maxPopulation = inputs[i].value;
             break;
           case 1:
-            this.dish.maxPopulation = inputs[i].value;
+            this.dish.countOfCells = inputs[i].value;
             break;
           case 2:
             this.energyRules.startEnergyModificator = inputs[i].value;

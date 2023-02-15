@@ -5,6 +5,7 @@ const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 const population = document.getElementById("population");
 const startButton = document.getElementById("start");
+let gameState = "ready";
 
 let defaultConfiguration = {
   dish: {
@@ -28,22 +29,21 @@ let defaultConfiguration = {
 };
 
 startButton.addEventListener("click", (e) => {
-  let configuration = new Configuration(
-    defaultConfiguration.dish,
-    defaultConfiguration.energyRules,
-    defaultConfiguration.radius,
-    defaultConfiguration.color,
-    defaultConfiguration.speed,
-    defaultConfiguration.frequencyDirectionChange
-  );
-  configuration.getDataFromInputs();
-  console.log(configuration);
-  let petri = new petriDish(ctx, configuration);
-  petri.seed();
-  petri.state = "running";
-  petri.animate();
-  e.target.disabled = true;
-  e.target.innerText = "Stop";
+  if (gameState === "running") {
+    gameState = "paused";
+    e.target.innerText = "Start";
+    return;
+  } else if (gameState === "paused") {
+    gameState = "running";
+    petri.animate();
+    e.target.innerText = "Stop";
+  } else {
+    gameState = "running";
+    configuration.getDataFromInputs();
+    petri.seed();
+    petri.animate();
+    e.target.innerText = "Stop";
+  }
 });
 
 canvas.width = window.innerWidth - 50;
@@ -198,22 +198,33 @@ class petriDish {
     }
   }
 
-  animate(state) {
-    if (state === "running") {
-      this.ctx.clearRect(0, 0, canvas.width, canvas.height);
-      this.energyCheck();
-      if (this.cells.length < this.configuration.dish.maxPopulation) {
-        this.spawnCheck();
-      }
-      this.update();
-      this.checkCollisionsWithBorders();
-      this.checkCollisions();
-      this.killCells();
-      this.draw();
-
-      population.innerText = this.cells.length;
-
-      requestAnimationFrame(this.animate.bind(this));
+  animate() {
+    if (gameState === "paused") {
+      return;
     }
+    this.ctx.clearRect(0, 0, canvas.width, canvas.height);
+    this.energyCheck();
+    if (this.cells.length < this.configuration.dish.maxPopulation) {
+      this.spawnCheck();
+    }
+    this.update();
+    this.checkCollisionsWithBorders();
+    this.checkCollisions();
+    this.killCells();
+    this.draw();
+
+    population.innerText = this.cells.length;
+
+    requestAnimationFrame(this.animate.bind(this));
   }
 }
+
+let configuration = new Configuration(
+  defaultConfiguration.dish,
+  defaultConfiguration.energyRules,
+  defaultConfiguration.radius,
+  defaultConfiguration.color,
+  defaultConfiguration.speed,
+  defaultConfiguration.frequencyDirectionChange
+);
+let petri = new petriDish(ctx, configuration);
