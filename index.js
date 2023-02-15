@@ -197,7 +197,9 @@ class petriDish {
   animate() {
     this.ctx.clearRect(0, 0, canvas.width, canvas.height);
     this.energyCheck();
-    this.spawnCheck();
+    if (this.cells.length < 3000) {
+      this.spawnCheck();
+    }
     this.update();
     this.checkCollisionsWithBorders();
     this.checkCollisions();
