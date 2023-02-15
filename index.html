@@ -76,7 +76,10 @@
       }
       .start {
         background-color: #387963;
-        border: none;
+        border-top: 2px solid #387963;
+        border-right: 2px solid #387963;
+        border-bottom: none;
+        border-left: none;
         cursor: pointer;
         width: 30%;
         color: #f8f8f8;
@@ -89,10 +92,30 @@
         background-color: #0f4b21;
         color: #2acc40;
         transition: 0.5s ease;
+        border-top: 2px solid #0f4b21;
+        border-right: 2px solid #0f4b21;
       }
       .start:disabled {
         background-color: #889493bd;
         color: rgb(0, 0, 0);
+      }
+      .cancel {
+        background-color: #ca1c16;
+        border-top: 2px solid #ca1c16;
+        border-right: 2px solid #ca1c16;
+        border-bottom: none;
+        border-left: none;
+        cursor: pointer;
+        color: #f8f8f8;
+        transition: 0.5s ease;
+        margin: 2px;
+      }
+      .cancel:hover {
+        color: #000000;
+        background-color: #a51813;
+        border-top: 2px solid #a51813;
+        border-right: 2px solid #a51813;
+        transition: 0.5s ease;
       }
     </style>
   </head>
@@ -114,6 +137,7 @@
             type="text"
             placeholder="better not more than 3000" />
           <button id="start" class="start">Start</button>
+          <button id="cancel" class="cancel">X</button>
         </div>
         <div class="energy_rules">
           <div>

@@ -5,6 +5,7 @@ const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 const population = document.getElementById("population");
 const startButton = document.getElementById("start");
+const resetButton = document.getElementById("cancel");
 let gameState = "ready";
 
 let defaultConfiguration = {
@@ -43,6 +44,16 @@ startButton.addEventListener("click", (e) => {
     petri.seed();
     petri.animate();
     e.target.innerText = "Stop";
+  }
+});
+
+resetButton.addEventListener("click", (e) => {
+  let inputs = document.getElementsByTagName("input");
+  petri.cells = [];
+  gameState = "ready";
+  startButton.innerText = "Start";
+  for (let i = 0; i < inputs.length; ++i) {
+    inputs[i].disabled = false;
   }
 });
 
@@ -97,6 +108,13 @@ class petriDish {
   killCells() {
     for (let i = 0; i < this.cells.length; i++) {
       if (this.cells[i].status === "dead") {
+        this.cells.splice(i, 1);
+      } else if (
+        this.cells[i].x > canvas.width + 20 ||
+        this.cells[i].x < -20 ||
+        this.cells[i].y > canvas.height + 20 ||
+        this.cells[i].y < -20
+      ) {
         this.cells.splice(i, 1);
       }
     }
