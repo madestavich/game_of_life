@@ -20,7 +20,7 @@ let defaultConfiguration = {
     energyPerMove: 2,
     eatAdvantage: 6,
   },
-  radius: 5,
+  radius: 3,
   color: "#000",
   speed: 2,
   frequencyDirectionChange: 3,
@@ -43,8 +43,8 @@ startButton.addEventListener("click", (e) => {
   e.target.disabled = true;
 });
 
-canvas.width = window.innerWidth - 10;
-canvas.height = window.innerHeight - window.innerHeight / 6;
+canvas.width = window.innerWidth - 50;
+canvas.height = window.innerHeight - window.innerHeight / 6 - 30;
 ctx.fillStyle = defaultConfiguration.color;
 
 class petriDish {
@@ -197,7 +197,7 @@ class petriDish {
   animate() {
     this.ctx.clearRect(0, 0, canvas.width, canvas.height);
     this.energyCheck();
-    if (this.cells.length < 3000) {
+    if (this.cells.length < 2000) {
       this.spawnCheck();
     }
     this.update();

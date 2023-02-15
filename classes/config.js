@@ -53,6 +53,5 @@ export class Configuration {
         }
       }
     }
-    console.log(inputs[0].value);
   }
 }

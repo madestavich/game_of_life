@@ -8,39 +8,46 @@
     <style>
       body {
         margin: 0;
-        overflow: hidden;
+        /* overflow: hidden; */
         font-size: 11px;
         text-align: center;
-        background-color: rgb(77, 77, 77);
+        background-color: #000000;
         font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
           "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
       }
       input {
         margin: 1%;
         padding: 1%;
-        width: 70%;
-        font-size: 9px;
+        font-size: 12px;
         text-align: center;
+        background-color: #611343;
+        border: 5px solid #611343;
+        transition: 0.2s ease;
+        color: #ffffff;
       }
-      .energy_rules p {
-        margin: 0;
-        width: 25%;
+      input:hover {
+        border: 5px solid #119e3b;
+        border-radius: 5px;
+        transition: 0.2s ease;
+      }
+      input:active {
+        border: 5px solid #a0da19;
       }
       .canvas {
-        border: 5px solid rgb(77, 77, 77);
-        background-color: #e6ebbb;
+        border: 5px solid #575456;
+        background-color: #a1c6c7;
       }
       .settings {
         display: flex;
         justify-content: space-between;
-        background-color: rgb(17, 24, 24);
+        background-color: #000000;
         padding: 4px;
       }
       .population {
         display: flex;
         flex-direction: column;
         justify-content: center;
-        color: rgb(255, 255, 255);
+        color: #d189b5;
         padding: 0 2px;
         width: 20%;
       }
@@ -52,34 +59,34 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        background-color: rgb(155, 118, 64);
+        justify-content: center;
+        background-color: #643050;
+        padding: 5px;
       }
       .energy_rules {
         display: flex;
         flex-direction: column;
-        background-color: rgb(184, 212, 106);
-        width: 70%;
-      }
-      .wrapper {
-        display: flex;
-        flex-direction: row;
+        background-color: #1f0c17;
+        width: 80%;
       }
       .start {
-        background-color: rgb(27, 177, 39);
+        background-color: #387963;
         border: none;
         cursor: pointer;
         width: 30%;
-        color: rgb(36, 78, 66);
+        color: #f8f8f8;
         transition: 0.5s ease;
         margin: 2px;
+        width: 60%;
+        height: 30%;
       }
       .start:hover {
-        background-color: rgb(15, 109, 38);
-        color: rgb(78, 206, 170);
+        background-color: #0f4b21;
+        color: #2acc40;
         transition: 0.5s ease;
       }
       .start:disabled {
-        background-color: rgb(124, 124, 124);
+        background-color: #889493bd;
         color: rgb(0, 0, 0);
       }
     </style>
@@ -88,70 +95,62 @@
     <canvas id="canvas" class="canvas"></canvas>
     <section class="settings">
       <div class="population">
-        <p>Total population:</p>
+        <h2>Total population:</h2>
         <b id="population"></b>
       </div>
       <div class="settings_wrapper">
         <div class="dish_settings">
-          <p
-            >Count of cells<input
-              type="text"
-              placeholder="better not more than 3000"
-          /></p>
+          <input
+            title="Count of cells"
+            type="text"
+            placeholder="better not more than 3000" />
           <button id="start" class="start">Start</button>
         </div>
         <div class="energy_rules">
-          <div class="wrapper">
-            <p
-              >Cell energy<input
-                id="cell_energy"
-                type="text"
-                placeholder="try from 2"
-            /></p>
-            <p
-              >Cell reproduce<input
-                id="cell_reproduce"
-                type="text"
-                placeholder="on this count of energy"
-            /></p>
-            <p
-              >Energy rest<input
-                id="reproduce_rest"
-                type="text"
-                placeholder="after reproduce"
-            /></p>
-            <p
-              >Start move<input
-                id="start_move"
-                type="text"
-                placeholder="on this energy or higher"
-            /></p>
+          <div>
+            <input
+              title="Cell energy modificator"
+              id="cell_energy"
+              type="text"
+              placeholder="1-100" />
+            <input
+              title="Cell reproduce at this energy level"
+              id="cell_reproduce"
+              type="text"
+              placeholder="1-10000" />
+            <input
+              title="Energy remains after reproduce"
+              id="reproduce_rest"
+              type="text"
+              placeholder="0-100" />
+
+            <input
+              title="Cell begin moving at this energy level or higher"
+              id="start_move"
+              type="text"
+              placeholder="0-1000" />
           </div>
-          <div class="wrapper">
-            <p
-              >Start move<input
-                id="move_modificator"
-                type="text"
-                placeholder="randomize modificator"
-            /></p>
-            <p
-              >Stop move<input
-                id="stop_move"
-                type="text"
-                placeholder="on this energy"
-            /></p>
-            <p
-              >Energy per move<input
-                id="energy_per_move"
-                type="text"
-                placeholder="spent"
-            /></p>
-            <p
-              >Eat advantage<input
-                id="eat_advantage"
-                type="text"
-                placeholder="adventage to eat cell"
-            /></p>
+          <div>
+            <input
+              title="Randomizator for move or not when energy enough"
+              id="move_modificator"
+              type="text"
+              placeholder="1-1000" />
+            <input
+              title="Cell stop moving at this energy level"
+              id="stop_move"
+              type="text"
+              placeholder="0-100" />
+            <input
+              title="Energy spent on move"
+              id="energy_per_move"
+              type="text"
+              placeholder="0-1000" />
+            <input
+              title="Adventage that must have cell to eat another cell"
+              id="eat_advantage"
+              type="text"
+              placeholder="0-100" />
           </div>
         </div>
       </div>
