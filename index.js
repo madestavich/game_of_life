@@ -55,6 +55,7 @@ resetButton.addEventListener("click", (e) => {
   for (let i = 0; i < inputs.length; ++i) {
     inputs[i].disabled = false;
   }
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 });
 
 canvas.width = window.innerWidth - 50;
