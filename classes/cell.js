@@ -16,14 +16,9 @@ export class Cell {
   }
 
   draw(context) {
-    if (this.energy > this.configuration.energyRules.spawn) {
-      context.save();
-      context.fillStyle = "#f00";
-    }
     context.beginPath();
     context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
     context.fill();
-    context.restore();
   }
 
   update() {
