@@ -11,28 +11,30 @@ let gameState = "ready";
 let defaultConfiguration = {
   dish: {
     countOfCells: 1,
-    maxPopulation: 1000,
+    maxPopulation: 500,
   },
   energyRules: {
-    startEnergyModificator: 10,
-    spawn: 17,
+    startEnergyModificator: 2,
+    spawn: 1,
     spawnRest: 1,
-    startMove: 6,
-    startMoveModificator: 10,
-    stopMove: 0,
-    energyPerMove: 2,
-    eatAdvantage: 6,
+    startMove: 1,
+    startMoveModificator: 1,
+    stopMove: 1,
+    energyPerMove: 1,
+    eatAdvantage: 1,
   },
-  radius: 3,
+  radius: 5,
   color: "#000",
-  speed: 2,
-  frequencyDirectionChange: 3,
+  speed: 3,
+  frequencyDirectionChange: 1,
+  maxAge: 12,
 };
 
 startButton.addEventListener("click", (e) => {
   if (gameState === "running") {
     gameState = "paused";
     e.target.innerText = "Start";
+    petri.logCells();
     return;
   } else if (gameState === "paused") {
     gameState = "running";
@@ -66,7 +68,6 @@ class petriDish {
   constructor(ctx, configuration) {
     this.ctx = ctx;
     this.cells = [];
-    this.nextCells = this.cells;
     this.configuration = configuration;
     this.state = "paused";
   }
@@ -108,6 +109,10 @@ class petriDish {
 
   killCells() {
     for (let i = 0; i < this.cells.length; i++) {
+      this.cells[i].age++;
+      if (this.cells[i].age > this.configuration.maxAge) {
+        this.cells[i].status = "dead";
+      }
       if (this.cells[i].status === "dead") {
         this.cells.splice(i, 1);
       } else if (
@@ -149,7 +154,7 @@ class petriDish {
           this.cells[i].radius,
           this.cells[i].color
         );
-        this.cells[i].energy = this.configuration.energyRules.spawnRest;
+        this.cells[i].energy -= this.configuration.energyRules.spawnRest;
       }
     }
   }
@@ -218,23 +223,29 @@ class petriDish {
   }
 
   animate() {
-    if (gameState === "paused") {
+    if (gameState === "running") {
+      this.ctx.clearRect(0, 0, canvas.width, canvas.height);
+      this.energyCheck();
+      this.killCells();
+      if (this.cells.length < this.configuration.dish.maxPopulation) {
+        this.spawnCheck();
+      }
+      this.killCells();
+      this.update();
+      this.killCells();
+      this.checkCollisionsWithBorders();
+      this.checkCollisions();
+      this.draw();
+
+      population.innerText = this.cells.length;
+
+      requestAnimationFrame(this.animate.bind(this));
+    } else {
       return;
     }
-    this.ctx.clearRect(0, 0, canvas.width, canvas.height);
-    this.energyCheck();
-    if (this.cells.length < this.configuration.dish.maxPopulation) {
-      this.spawnCheck();
-    }
-    this.update();
-    this.checkCollisionsWithBorders();
-    this.checkCollisions();
-    this.killCells();
-    this.draw();
-
-    population.innerText = this.cells.length;
-
-    requestAnimationFrame(this.animate.bind(this));
+  }
+  logCells() {
+    console.log(this.cells);
   }
 }
 
@@ -244,6 +255,7 @@ let configuration = new Configuration(
   defaultConfiguration.radius,
   defaultConfiguration.color,
   defaultConfiguration.speed,
-  defaultConfiguration.frequencyDirectionChange
+  defaultConfiguration.frequencyDirectionChange,
+  defaultConfiguration.maxAge
 );
 let petri = new petriDish(ctx, configuration);

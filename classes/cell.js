@@ -13,6 +13,7 @@ export class Cell {
       Math.random() * configuration.energyRules.startEnergyModificator
     );
     this.status = "alive";
+    this.age = 0;
   }
 
   draw(context) {
@@ -22,6 +23,9 @@ export class Cell {
   }
 
   update() {
+    if (this.status === "dead") {
+      return;
+    }
     if (this.frequencyDirectionChange === this.updateCounter) {
       this.updateCounter = 0;
       this.direction = Math.random() * 2 * Math.PI;

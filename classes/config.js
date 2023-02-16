@@ -5,7 +5,8 @@ export class Configuration {
     radius,
     color,
     speed,
-    frequencyDirectionChange
+    frequencyDirectionChange,
+    maxAge
   ) {
     this.dish = dish;
     this.energyRules = energyRules;
@@ -13,6 +14,7 @@ export class Configuration {
     this.color = color;
     this.speed = speed;
     this.frequencyDirectionChange = frequencyDirectionChange;
+    this.maxAge = maxAge;
   }
 
   getDataFromInputs() {
