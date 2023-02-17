@@ -17,9 +17,14 @@ export class Cell {
   }
 
   draw(context) {
+    if (this.status === "dead") {
+      context.save();
+      context.fillStyle = "#201e1ee6";
+    }
     context.beginPath();
     context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
     context.fill();
+    context.restore();
   }
 
   update() {

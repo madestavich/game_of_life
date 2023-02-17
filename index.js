@@ -23,11 +23,11 @@ let defaultConfiguration = {
     energyPerMove: 1,
     eatAdvantage: 1,
   },
-  radius: 5,
+  radius: 10,
   color: "#000",
-  speed: 3,
+  speed: 6,
   frequencyDirectionChange: 1,
-  maxAge: 12,
+  maxAge: 250,
 };
 
 startButton.addEventListener("click", (e) => {
@@ -102,6 +102,7 @@ class petriDish {
       frequencyDirectionChange: Math.floor(
         Math.random() * this.configuration.frequencyDirectionChange
       ),
+      maxAge: this.configuration.maxAge * Math.floor(Math.random() * 10),
     };
     let cell = new Cell(configuration);
     this.cells.push(cell);
@@ -230,9 +231,9 @@ class petriDish {
       if (this.cells.length < this.configuration.dish.maxPopulation) {
         this.spawnCheck();
       }
-      this.killCells();
+      // this.killCells();
       this.update();
-      this.killCells();
+      // this.killCells();
       this.checkCollisionsWithBorders();
       this.checkCollisions();
       this.draw();
