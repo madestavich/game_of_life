@@ -23,11 +23,11 @@ let defaultConfiguration = {
     energyPerMove: 1,
     eatAdvantage: 1,
   },
-  radius: 10,
+  radius: 5,
   color: "#000",
   speed: 6,
   frequencyDirectionChange: 1,
-  maxAge: 250,
+  maxAge: 125,
 };
 
 startButton.addEventListener("click", (e) => {
@@ -85,6 +85,7 @@ class petriDish {
         frequencyDirectionChange: Math.floor(
           Math.random() * this.configuration.frequencyDirectionChange
         ),
+        maxAge: this.configuration.maxAge * Math.round(Math.random() * 10),
       };
       this.cells.unshift(new Cell(configuration));
     }
@@ -105,17 +106,19 @@ class petriDish {
       maxAge: this.configuration.maxAge * Math.floor(Math.random() * 10),
     };
     let cell = new Cell(configuration);
-    this.cells.push(cell);
+    if (cell.energy > 0 && !isNaN(cell.x) && !isNaN(cell.y)) {
+      this.cells.push(cell);
+    }
   }
 
   killCells() {
     for (let i = 0; i < this.cells.length; i++) {
-      this.cells[i].age++;
       if (this.cells[i].age > this.configuration.maxAge) {
-        this.cells[i].status = "dead";
-      }
-      if (this.cells[i].status === "dead") {
         this.cells.splice(i, 1);
+        i--;
+      } else if (this.cells[i].status === "dead") {
+        this.cells.splice(i, 1);
+        i--;
       } else if (
         this.cells[i].x > canvas.width + 20 ||
         this.cells[i].x < -20 ||
@@ -123,6 +126,7 @@ class petriDish {
         this.cells[i].y < -20
       ) {
         this.cells.splice(i, 1);
+        i--;
       }
     }
   }
@@ -162,6 +166,7 @@ class petriDish {
 
   energyCheck() {
     for (let i = 0; i < this.cells.length; i++) {
+      this.cells[i].age++;
       if (this.cells[i].energy === 0) {
         this.cells[i].status = "dead";
       } else if (this.cells[i].speed === 0) {
@@ -181,6 +186,9 @@ class petriDish {
       } else {
         if (this.cells[i].energy > this.configuration.energyRules.stopMove) {
           this.cells[i].energy -= this.configuration.energyRules.energyPerMove;
+          if (this.cells[i].energy === 0) {
+            this.cells[i].status = "dead";
+          }
         } else {
           this.cells[i].speed = 0;
         }
@@ -227,15 +235,13 @@ class petriDish {
     if (gameState === "running") {
       this.ctx.clearRect(0, 0, canvas.width, canvas.height);
       this.energyCheck();
-      this.killCells();
       if (this.cells.length < this.configuration.dish.maxPopulation) {
         this.spawnCheck();
       }
-      // this.killCells();
       this.update();
-      // this.killCells();
       this.checkCollisionsWithBorders();
       this.checkCollisions();
+      this.killCells();
       this.draw();
 
       population.innerText = this.cells.length;
