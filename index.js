@@ -107,6 +107,7 @@ class petriDish {
       };
       this.cells.unshift(new Cell(configuration));
     }
+    this.draw();
     this.logCells();
   }
 
