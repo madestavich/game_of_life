@@ -20,7 +20,6 @@ export class Configuration {
   getDataFromInputs() {
     let inputs = document.getElementsByTagName("input");
     for (let i = 0; i < inputs.length; ++i) {
-      inputs[i].disabled = true;
       if (inputs[i].value != "") {
         switch (i) {
           case 0:
@@ -52,6 +51,10 @@ export class Configuration {
             break;
           case 8:
             this.energyRules.eatAdvantage = inputs[i].value;
+            break;
+          case 9:
+            this.color = inputs[i].value;
+            console.log(inputs[i]);
             break;
           default:
             break;

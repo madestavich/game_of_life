@@ -15,7 +15,7 @@
         font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
           "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
       }
-      input {
+      .text_input {
         margin: 1%;
         padding: 1%;
         font-size: 12px;
@@ -25,18 +25,39 @@
         transition: 0.2s ease;
         color: #ffffff;
       }
-      input:hover {
+      .text_input:hover {
         border: 5px solid #119e3b;
         border-radius: 5px;
         transition: 0.2s ease;
       }
-      input:active {
+      .text_input:active {
         border: 5px solid #a0da19;
       }
-      input:disabled {
+      .text_input:disabled {
         background-color: #585155;
         border: 5px solid #57414e;
         color: #bdc019;
+      }
+      .cell_color {
+        padding: 0;
+        transition: 0.2s ease;
+        background-color: #440b3b;
+        border: 1px solid #440b3b;
+        border-radius: 5px;
+        width: 40px;
+        height: 40px;
+      }
+      .cell_color:hover {
+        transition: 0.2s ease;
+        background-color: #119e3b;
+        border: 1px solid #119e3b;
+        border-radius: 5px;
+      }
+      input[type="color"]::-webkit-color-swatch-wrapper {
+        padding: 4px;
+      }
+      input[type="color"]::-webkit-color-swatch {
+        border: none;
       }
       .canvas {
         border: 5px solid #575456;
@@ -77,11 +98,14 @@
         background-color: #440b3b;
         width: 80%;
       }
+      .attributes_wrapper {
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        margin: 0 10px;
+      }
       .start {
         background-color: #387963;
-        border-top: 2px solid #387963;
-        border-right: 2px solid #387963;
-        border-bottom: none;
         border-left: none;
         cursor: pointer;
         width: 30%;
@@ -95,17 +119,35 @@
         background-color: #0f4b21;
         color: #2acc40;
         transition: 0.5s ease;
-        border-top: 2px solid #0f4b21;
-        border-right: 2px solid #0f4b21;
       }
       .start:disabled {
         background-color: #889493bd;
         color: rgb(0, 0, 0);
       }
+      .seed {
+        background-color: #b7b71d;
+        border-left: none;
+        cursor: pointer;
+        width: 30%;
+        color: #f8f8f8;
+        transition: 0.5s ease;
+        margin: 2px;
+        width: 60%;
+        height: 30%;
+      }
+      .seed:hover {
+        background-color: #6f6f13;
+        color: #e4e72f;
+        transition: 0.5s ease;
+      }
+      .seed:disabled {
+        background-color: #889493bd;
+        color: rgb(0, 0, 0);
+      }
       .cancel {
         background-color: #ca1c16;
-        border-top: 2px solid #ca1c16;
-        border-right: 2px solid #ca1c16;
+        /* border-top: 2px solid #ca1c16;
+        border-right: 2px solid #ca1c16; */
         border-bottom: none;
         border-left: none;
         cursor: pointer;
@@ -116,8 +158,8 @@
       .cancel:hover {
         color: #000000;
         background-color: #a51813;
-        border-top: 2px solid #a51813;
-        border-right: 2px solid #a51813;
+        /* border-top: 2px solid #a51813;
+        border-right: 2px solid #a51813; */
         transition: 0.5s ease;
       }
     </style>
@@ -132,61 +174,77 @@
       <div class="settings_wrapper">
         <div class="dish_settings">
           <input
+            class="text_input"
             title="Maximum population when reproducing stop"
             type="text"
             placeholder="1-3000" />
           <input
+            class="text_input"
             title="Count of cells"
             type="text"
             placeholder="better not more than 3000" />
           <button id="start" class="start">Start</button>
+          <button id="seed" class="seed">Seed</button>
           <button id="cancel" class="cancel">X</button>
         </div>
         <div class="energy_rules">
-          <div>
+          <div class="attributes_wrapper">
             <input
+              class="text_input"
               title="Cell energy modificator"
               id="cell_energy"
               type="text"
               placeholder="1-100" />
             <input
+              class="text_input"
               title="Cell reproduce at this energy level"
               id="cell_reproduce"
               type="text"
               placeholder="1-10000" />
             <input
+              class="text_input"
               title="Energy reduces for reproduce"
               id="reproduce_rest"
               type="text"
               placeholder="0-100" />
 
             <input
+              class="text_input"
               title="Cell begin moving at this energy level or higher"
               id="start_move"
               type="text"
               placeholder="0-1000" />
           </div>
-          <div>
+          <div class="attributes_wrapper">
             <input
+              class="text_input"
               title="Randomizator for move or not when energy enough"
               id="move_modificator"
               type="text"
               placeholder="1-1000" />
             <input
+              class="text_input"
               title="Cell stop moving at this energy level"
               id="stop_move"
               type="text"
               placeholder="0-100" />
             <input
+              class="text_input"
               title="Energy spent on move"
               id="energy_per_move"
               type="text"
               placeholder="0-1000" />
             <input
+              class="text_input"
               title="Adventage that must have cell to eat another cell"
               id="eat_advantage"
               type="text"
               placeholder="0-100" />
+            <input
+              class="cell_color"
+              title="Cell color"
+              id="cell_color"
+              type="color" />
           </div>
         </div>
       </div>

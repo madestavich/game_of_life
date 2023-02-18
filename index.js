@@ -5,7 +5,9 @@ const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 const population = document.getElementById("population");
 const startButton = document.getElementById("start");
+const seedButton = document.getElementById("seed");
 const resetButton = document.getElementById("cancel");
+const inputs = document.getElementsByTagName("input");
 let gameState = "ready";
 
 let defaultConfiguration = {
@@ -23,7 +25,7 @@ let defaultConfiguration = {
     energyPerMove: 1,
     eatAdvantage: 1,
   },
-  radius: 5,
+  radius: 7,
   color: "#000",
   speed: 6,
   frequencyDirectionChange: 1,
@@ -34,6 +36,7 @@ startButton.addEventListener("click", (e) => {
   if (gameState === "running") {
     gameState = "paused";
     e.target.innerText = "Start";
+    seedButton.disabled = true;
     petri.logCells();
     return;
   } else if (gameState === "paused") {
@@ -42,10 +45,24 @@ startButton.addEventListener("click", (e) => {
     e.target.innerText = "Stop";
   } else {
     gameState = "running";
-    configuration.getDataFromInputs();
-    petri.seed();
     petri.animate();
     e.target.innerText = "Stop";
+    seedButton.disabled = true;
+    for (let i = 0; i < inputs.length; i++) {
+      inputs[i].disabled = true;
+    }
+  }
+});
+
+seedButton.addEventListener("click", (e) => {
+  if (gameState === "running") {
+    return;
+  } else if (gameState === "paused") {
+    return;
+  } else {
+    let cellColor = document.getElementById("cell_color").value;
+    configuration.getDataFromInputs();
+    petri.seed(cellColor);
   }
 });
 
@@ -54,6 +71,7 @@ resetButton.addEventListener("click", (e) => {
   petri.cells = [];
   gameState = "ready";
   startButton.innerText = "Start";
+  seedButton.disabled = false;
   for (let i = 0; i < inputs.length; ++i) {
     inputs[i].disabled = false;
   }
@@ -72,7 +90,7 @@ class petriDish {
     this.state = "paused";
   }
 
-  seed() {
+  seed(color) {
     for (let i = 0; i < this.configuration.dish.countOfCells; i++) {
       let configuration = {
         energyRules: this.configuration.energyRules,
@@ -80,7 +98,7 @@ class petriDish {
         y: Math.floor(Math.random() * canvas.height),
         radius: this.configuration.radius,
         direction: Math.random() * 2 * Math.PI,
-        color: this.configuration.color,
+        color: color || this.configuration.color,
         speed: Math.floor(Math.random() * this.configuration.speed),
         frequencyDirectionChange: Math.floor(
           Math.random() * this.configuration.frequencyDirectionChange
@@ -89,6 +107,7 @@ class petriDish {
       };
       this.cells.unshift(new Cell(configuration));
     }
+    this.logCells();
   }
 
   spawnCell(x, y, radius, color) {
