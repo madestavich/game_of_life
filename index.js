@@ -25,24 +25,25 @@ let defaultConfiguration = {
     energyPerMove: 1,
     eatAdvantage: 1,
   },
-  radius: 7,
+  radius: 10,
   color: "#000",
-  speed: 6,
+  speed: 8,
   frequencyDirectionChange: 1,
-  maxAge: 125,
+  maxAge: 30,
 };
 
 startButton.addEventListener("click", (e) => {
   if (gameState === "running") {
     gameState = "paused";
     e.target.innerText = "Start";
-    seedButton.disabled = true;
+    seedButton.disabled = false;
     petri.logCells();
     return;
   } else if (gameState === "paused") {
     gameState = "running";
     petri.animate();
     e.target.innerText = "Stop";
+    seedButton.disabled = true;
   } else {
     gameState = "running";
     petri.animate();
@@ -61,7 +62,6 @@ seedButton.addEventListener("click", (e) => {
     return;
   } else {
     let cellColor = document.getElementById("cell_color").value;
-    configuration.getDataFromInputs();
     petri.seed(cellColor);
   }
 });
@@ -92,27 +92,27 @@ class petriDish {
 
   seed(color) {
     for (let i = 0; i < this.configuration.dish.countOfCells; i++) {
-      let configuration = {
-        energyRules: this.configuration.energyRules,
-        x: Math.floor(Math.random() * canvas.width),
-        y: Math.floor(Math.random() * canvas.height),
-        radius: this.configuration.radius,
-        direction: Math.random() * 2 * Math.PI,
-        color: color || this.configuration.color,
-        speed: Math.floor(Math.random() * this.configuration.speed),
-        frequencyDirectionChange: Math.floor(
-          Math.random() * this.configuration.frequencyDirectionChange
-        ),
-        maxAge: this.configuration.maxAge * Math.round(Math.random() * 10),
-      };
+      let configuration = new Configuration(
+        defaultConfiguration.dish,
+        defaultConfiguration.energyRules,
+        defaultConfiguration.radius,
+        color,
+        defaultConfiguration.speed,
+        defaultConfiguration.frequencyDirectionChange,
+        defaultConfiguration.maxAge
+      );
+      configuration.x = Math.floor(Math.random() * canvas.width);
+      configuration.y = Math.floor(Math.random() * canvas.height);
+      configuration.direction = Math.random() * 2 * Math.PI;
+      configuration.getDataFromInputs();
       this.cells.unshift(new Cell(configuration));
     }
     this.draw();
-    this.logCells();
   }
 
   spawnCell(x, y, radius, color) {
     let configuration = {
+      dish: this.configuration.dish,
       energyRules: this.configuration.energyRules,
       x: x,
       y: y,
@@ -170,7 +170,9 @@ class petriDish {
 
   spawnCheck() {
     for (let i = 0; i < this.cells.length; i++) {
-      if (this.cells[i].energy > this.configuration.energyRules.spawn) {
+      if (
+        this.cells[i].energy > this.cells[i].configuration.energyRules.spawn
+      ) {
         this.spawnCell(
           this.cells[i].x +
             this.cells[i].radius * Math.cos(this.cells[i].direction),
@@ -179,7 +181,8 @@ class petriDish {
           this.cells[i].radius,
           this.cells[i].color
         );
-        this.cells[i].energy -= this.configuration.energyRules.spawnRest;
+        this.cells[i].energy -=
+          this.cells[i].configuration.energyRules.spawnRest;
       }
     }
   }
@@ -192,20 +195,24 @@ class petriDish {
       } else if (this.cells[i].speed === 0) {
         if (
           this.cells[i].energy >
-          this.configuration.energyRules.startMove *
+          this.cells[i].configuration.energyRules.startMove *
             Math.floor(
               Math.random() *
-                this.configuration.energyRules.startMoveModificator
+                this.cells[i].configuration.energyRules.startMoveModificator
             )
         ) {
           this.cells[i].speed = Math.floor(
-            Math.random() * this.configuration.speed
+            Math.random() * this.cells[i].configuration.speed
           );
         }
         this.cells[i].energy++;
       } else {
-        if (this.cells[i].energy > this.configuration.energyRules.stopMove) {
-          this.cells[i].energy -= this.configuration.energyRules.energyPerMove;
+        if (
+          this.cells[i].energy >
+          this.cells[i].configuration.energyRules.stopMove
+        ) {
+          this.cells[i].energy -=
+            this.cells[i].configuration.energyRules.energyPerMove;
           if (this.cells[i].energy === 0) {
             this.cells[i].status = "dead";
           }

@@ -18,12 +18,10 @@ export class Cell {
   }
 
   draw(context) {
-    context.save();
     context.fillStyle = this.configuration.color;
     context.beginPath();
     context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
     context.fill();
-    context.restore();
   }
 
   update() {

@@ -19,7 +19,7 @@ export class Configuration {
 
   getDataFromInputs() {
     let inputs = document.getElementsByTagName("input");
-    for (let i = 0; i < inputs.length; ++i) {
+    for (let i = 0; i < inputs.length; i++) {
       if (inputs[i].value != "") {
         switch (i) {
           case 0:
